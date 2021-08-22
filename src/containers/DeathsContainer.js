@@ -1,3 +1,5 @@
+import Deaths from '../components/Deaths'
+
 const DeathsContainer = () => {
     
 }

@@ -1,3 +1,5 @@
+import Cases from '../components/Cases/Cases'
+
 const CasesContainer = () => {
     
 }

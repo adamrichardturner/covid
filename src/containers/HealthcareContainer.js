@@ -1,3 +1,5 @@
+import Healthcare from '../components/Healthcare'
+
 const HealthcareContainer = () => {
     
 }
