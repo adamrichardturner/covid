@@ -1,7 +1,9 @@
-import Deaths from '../components/Deaths'
+import Deaths from '../components/Deaths/Deaths'
 
 const DeathsContainer = () => {
-    
+    return(
+        <Deaths />
+    )
 }
 
 export default DeathsContainer

@@ -4,14 +4,23 @@ h1 {
 }
 
 .VaccinationsContainer {
-  padding: 25px;
   margin-top: 5vh;
   background: #F8F8F8;
+}
+
+div.col-sm-3 {
+  min-height: 30vh;
+  border: 1px solid black;
 }
 
 @media only screen and (max-width: 575px) {
   .VaccinationsContainer {
     margin: 0px 15px;
     height: auto;
+  }
+
+  div.col-sm-3 {
+    border: 0px;
+    min-height: auto;
   }
 }

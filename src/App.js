@@ -1,8 +1,24 @@
 import VaccinationsContainer from './containers/VaccinationsContainer'
-import { Container } from 'react-bootstrap'
+import CasesContainer from './containers/CasesContainer'
+import DeathsContainer from './containers/DeathsContainer'
+import HealthcareContainer from './containers/HealthcareContainer'
+import TestingContainer from './containers/TestingContainer'
+import getCases from './util/cases'
+import { Container, Row } from 'react-bootstrap'
 import './App.css';
+import { useEffect, useState } from 'react'
 
 function App() {
+  const [cases, setCases] = useState({
+    date: null,
+    newCases: null
+  })
+
+  useEffect(() => {
+    setCases({
+      date: getCases().date
+    })
+  }, [])
   return (
     <div className="App">
       <header>
@@ -10,6 +26,12 @@ function App() {
       </header>
       <Container className="VaccinationsContainer">
         <VaccinationsContainer />
+        <Row>
+          <CasesContainer daily={cases.daily}/>
+          <DeathsContainer />
+          <HealthcareContainer />
+          <TestingContainer />
+        </Row>
       </Container>
     </div>
   );
