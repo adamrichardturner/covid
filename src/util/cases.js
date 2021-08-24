@@ -1,4 +1,4 @@
-const getCases = () => {
+const Cases = () => {
     const axios = require("axios");
 
     const endpoint = (
@@ -22,8 +22,7 @@ const getCases = () => {
     const main = async () => {
 
         const result = await getData(endpoint);
-        return result.data[0];
-
+        return result;
     };  // main
 
 
@@ -31,7 +30,8 @@ const getCases = () => {
         console.error(err);
         process.exitCode = 1;
     });
+
     return main;
 }
 
-export default getCases;
+export default Cases;

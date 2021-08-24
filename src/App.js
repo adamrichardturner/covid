@@ -3,7 +3,7 @@ import CasesContainer from './containers/CasesContainer'
 import DeathsContainer from './containers/DeathsContainer'
 import HealthcareContainer from './containers/HealthcareContainer'
 import TestingContainer from './containers/TestingContainer'
-import getCases from './util/cases'
+import Cases from './util/Cases'
 import { Container, Row } from 'react-bootstrap'
 import './App.css';
 import { useEffect, useState } from 'react'
@@ -15,10 +15,12 @@ function App() {
   })
 
   useEffect(() => {
-    setCases({
-      date: getCases().date
-    })
+    const cases = Cases()
+    console.log(cases)
   }, [])
+
+  console.log(cases)
+
   return (
     <div className="App">
       <header>
