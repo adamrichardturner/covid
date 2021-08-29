@@ -9,15 +9,32 @@ import './App.css';
 import { useEffect, useState } from 'react'
 
 function App() {
+
   const [cases, setCases] = useState({
     date: null,
     newCases: null
   })
 
   useEffect(() => {
-    const cases = Cases()
-    console.log(cases)
+    fetchCases()
   }, [])
+
+  const endpoint = (
+    'https://api.coronavirus.data.gov.uk/v1/data?' +
+    'filters=areaType=nation;areaName=england&' +
+    'structure={"date":"date","newCases":"newCasesByPublishDate"}'
+)
+
+  const fetchCases = async () => {
+      const response = await fetch(endpoint)
+      const data = response.json()
+      return data.then((resp) => {
+        setCases({
+          date: resp.data[0].date,
+          newCases: resp.data[0].newCases
+        })
+      })
+  }
 
   console.log(cases)
 
