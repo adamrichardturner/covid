@@ -1,8 +1,18 @@
 import Cases from '../components/Cases/Cases'
 
-const CasesContainer = () => {
+const CasesContainer = ({dateCases, dailyCases}) => {
+
+    const numberWithCommas = x => {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    const cases = numberWithCommas(dailyCases)
+
     return(
-        <Cases />
+        <Cases 
+            dateCases={dateCases}
+            dailyCases={cases}
+            />
     )
 }
 

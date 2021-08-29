@@ -15,18 +15,30 @@ function App() {
     newCases: null
   })
 
+  const [vaccinations, setVaccinations] = useState({
+    date: null,
+    vaccinations: null
+  })
+
   useEffect(() => {
     fetchCases()
+    fetchVaccinations()
   }, [])
 
-  const endpoint = (
+  const casesEndpoint = (
     'https://api.coronavirus.data.gov.uk/v1/data?' +
     'filters=areaType=nation;areaName=england&' +
     'structure={"date":"date","newCases":"newCasesByPublishDate"}'
 )
 
+  const vacEndpoint = (
+    'https://api.coronavirus.data.gov.uk/v1/data?' +
+    'filters=areaType=nation;areaName=england&' +
+    'structure={"date":"date","vaccinations":"newPeopleVaccinatedCompleteByPublishDate"}'
+  )
+
   const fetchCases = async () => {
-      const response = await fetch(endpoint)
+      const response = await fetch(casesEndpoint)
       const data = response.json()
       return data.then((resp) => {
         setCases({
@@ -36,8 +48,20 @@ function App() {
       })
   }
 
-  console.log(cases)
+  const fetchVaccinations = async () => {
+    const response = await fetch(vacEndpoint)
+    const data = response.json()
+    return data.then((resp) => {
+      console.log(resp)
+      setVaccinations({
+        date: resp.data[0].date,
+        vaccinations: resp.data[0].vaccinations
+      })
+    })
+  }
 
+  console.log(cases)
+  console.log(vaccinations)
   return (
     <div className="App">
       <header>
@@ -46,7 +70,7 @@ function App() {
       <Container className="VaccinationsContainer">
         <VaccinationsContainer />
         <Row>
-          <CasesContainer daily={cases.daily}/>
+          <CasesContainer dateCases={cases.date} dailyCases={cases.newCases}/>
           <DeathsContainer />
           <HealthcareContainer />
           <TestingContainer />
