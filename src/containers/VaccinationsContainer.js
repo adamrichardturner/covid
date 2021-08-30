@@ -1,8 +1,15 @@
 import Vaccinations from '../components/Vaccinations/Vaccinations'
 
-const VaccinationsContainer = () => {
+const VaccinationsContainer = ({firstDosesDate, firstDoses}) => {
+
+    const numberWithCommas = x => {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    const doses = numberWithCommas(firstDoses)
+
     return(
-        <Vaccinations />
+        <Vaccinations firstDosesDate={firstDosesDate} firstDoses={doses} />
     )
 }
 

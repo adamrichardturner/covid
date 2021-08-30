@@ -2,16 +2,16 @@ import { Row, Col } from 'react-bootstrap'
 import './Vaccinations.css'
 
 
-const Vaccinations = () => {
+const Vaccinations = ({firstDosesDate, firstDoses}) => {
     return(
         <Row className="VaccinationsRow">
             <Col sm={3}>
                 <h2>People Vaccinated</h2>
-                <p>Up to and including 21 August 2021</p>
+                <p>Up to and including {firstDosesDate}</p>
             </Col>
             <Col sm={3}>
                 <p>Daily - 1st Dose</p>
-                <h3>69,270</h3> <br />
+                <h3>{firstDoses}</h3> <br />
                 <p>Total - 1st Dose</p>
                 <h3>47,643,064</h3>
             </Col>

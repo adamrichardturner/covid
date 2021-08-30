@@ -3,7 +3,6 @@ import CasesContainer from './containers/CasesContainer'
 import DeathsContainer from './containers/DeathsContainer'
 import HealthcareContainer from './containers/HealthcareContainer'
 import TestingContainer from './containers/TestingContainer'
-import Cases from './util/Cases'
 import { Container, Row } from 'react-bootstrap'
 import './App.css';
 import { useEffect, useState } from 'react'
@@ -11,18 +10,24 @@ import { useEffect, useState } from 'react'
 function App() {
 
   const [cases, setCases] = useState({
-    date: null,
-    newCases: null
+    date: '',
+    newCases: ''
   })
 
-  const [vaccinations, setVaccinations] = useState({
-    date: null,
-    vaccinations: null
+  const [firstDoses, setFirstDoses] = useState({
+    date: '',
+    firstDoses: ''
+  })
+
+  const [totalFirstDoses, setTotalFirstDoses] = useState({
+    date: '',
+    totalFirstDoses: ''
   })
 
   useEffect(() => {
     fetchCases()
-    fetchVaccinations()
+    fetchFirstDosesDaily()
+    fetchTotalFirstDoses()
   }, [])
 
   const casesEndpoint = (
@@ -31,10 +36,20 @@ function App() {
     'structure={"date":"date","newCases":"newCasesByPublishDate"}'
 )
 
-  const vacEndpoint = (
+  const vacEndpointFirstDoses = (
     'https://api.coronavirus.data.gov.uk/v1/data?' +
     'filters=areaType=nation;areaName=england&' +
-    'structure={"date":"date","vaccinations":"newPeopleVaccinatedCompleteByPublishDate"}'
+    `structure={
+      "date":"date",
+      "firstDoses":"newPeopleVaccinatedFirstDoseByPublishDate"}`
+)
+
+  const vacEndpointFirstDosesTotal = (
+    'https://api.coronavirus.data.gov.uk/v1/data?' +
+    'filters=areaType=nation;areaName=england&' +
+    `structure={
+      "date":"date",
+      "firstDosesTotal":"cumPeopleReceivingFirstDose"}`
   )
 
   const fetchCases = async () => {
@@ -48,27 +63,36 @@ function App() {
       })
   }
 
-  const fetchVaccinations = async () => {
-    const response = await fetch(vacEndpoint)
+  const fetchFirstDosesDaily = async () => {
+    const response = await fetch(vacEndpointFirstDoses)
     const data = response.json()
     return data.then((resp) => {
-      console.log(resp)
-      setVaccinations({
+      setFirstDoses({
         date: resp.data[0].date,
-        vaccinations: resp.data[0].vaccinations
+        firstDoses: resp.data[0].firstDoses
       })
     })
   }
 
-  console.log(cases)
-  console.log(vaccinations)
+  const fetchTotalFirstDoses = async () => {
+    const response = await fetch(vacEndpointFirstDosesTotal)
+    const data = response.json()
+    return data.then((resp) => {
+      console.log(resp)
+      setTotalFirstDoses({
+        date: resp.data[0].date,
+        firstDosesTotal: resp.data[0]
+      })
+    })
+  }
+
   return (
     <div className="App">
       <header>
         <h1>Covid-19 UK</h1>
       </header>
       <Container className="VaccinationsContainer">
-        <VaccinationsContainer />
+        <VaccinationsContainer firstDosesDate={firstDoses.date} firstDoses={firstDoses.firstDoses}/>
         <Row>
           <CasesContainer dateCases={cases.date} dailyCases={cases.newCases}/>
           <DeathsContainer />
