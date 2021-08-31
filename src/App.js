@@ -24,10 +24,21 @@ function App() {
     totalFirstDoses: ''
   })
 
+  const [secondDoses, setSecondDoses] = useState({
+    date: '',
+    secondDoses: ''
+  })
+
+  const [totalSecondDoses, setTotalSecondDoses] = useState({
+    date: '',
+    totalSecondDoses: ''
+  })
+
   useEffect(() => {
     fetchCases()
     fetchFirstDosesDaily()
     fetchTotalFirstDoses()
+    fetchSecondDosesDaily()
   }, [])
 
   const casesEndpoint = (
@@ -49,7 +60,23 @@ function App() {
     'filters=areaType=nation;areaName=england&' +
     `structure={
       "date":"date",
-      "firstDosesTotal":"cumPeopleReceivingFirstDose"}`
+      "firstDosesTotal":"cumPeopleVaccinatedFirstDoseByPublishDate"}`
+  )
+
+  const vacEndPointSecondDoses = (
+    'https://api.coronavirus.data.gov.uk/v1/data?' +
+    'filters=areaType=nation;areaName=england&' +
+    `structure={
+      "date":"date",
+      "secondDoses":"newPeopleVaccinatedSecondDoseByPublishDate"}`
+)
+
+  const vacEndpointSecondDosesTotal = (
+    'https://api.coronavirus.data.gov.uk/v1/data?' +
+    'filters=areaType=nation;areaName=england&' +
+    `structure={
+      "date":"date",
+      "firstDosesTotal":"cumPeopleVaccinatedFirstDoseByPublishDate"}`
   )
 
   const fetchCases = async () => {
@@ -78,10 +105,20 @@ function App() {
     const response = await fetch(vacEndpointFirstDosesTotal)
     const data = response.json()
     return data.then((resp) => {
-      console.log(resp)
       setTotalFirstDoses({
         date: resp.data[0].date,
-        firstDosesTotal: resp.data[0]
+        totalFirstDoses: resp.data[0].firstDosesTotal
+      })
+    })
+  }
+
+  const fetchSecondDosesDaily = async () => {
+    const response = await fetch(vacEndPointSecondDoses)
+    const data = response.json()
+    return data.then((resp) => {
+      setSecondDoses({
+        date: resp.data[0].date,
+        totalSecondDoses: resp.data[0].firstDosesTotal
       })
     })
   }
@@ -92,7 +129,13 @@ function App() {
         <h1>Covid-19 UK</h1>
       </header>
       <Container className="VaccinationsContainer">
-        <VaccinationsContainer firstDosesDate={firstDoses.date} firstDoses={firstDoses.firstDoses}/>
+        <VaccinationsContainer firstDosesDate={firstDoses.date} 
+                               firstDoses={firstDoses.firstDoses}
+                               totalFirstDosesDate={totalFirstDoses.date}
+                               totalFirstDoses={totalFirstDoses.totalFirstDoses}
+                               secondDosesDate={secondDoses.date}
+                               secondDoses={secondDoses.secondDoses}
+                               />
         <Row>
           <CasesContainer dateCases={cases.date} dailyCases={cases.newCases}/>
           <DeathsContainer />
