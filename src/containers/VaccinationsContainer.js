@@ -1,18 +1,37 @@
 import Vaccinations from '../components/Vaccinations/Vaccinations'
 
-const VaccinationsContainer = ({firstDosesDate, firstDoses, totalFirstDosesDate, totalFirstDoses}) => {
+const VaccinationsContainer = ({firstDosesDate, 
+                                firstDoses, 
+                                totalFirstDosesDate, 
+                                totalFirstDoses,
+                                secondDosesDate,
+                                secondDoses,
+                                totalSecondDoses,
+                                totalSecondDosesDate,
+                                uptakeFirstDose,
+                                uptakeSecondDose
+                            }) => {
 
     const numberWithCommas = x => {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
-    const doses = numberWithCommas(firstDoses)
-    const dosesTotal = numberWithCommas(totalFirstDoses)
+    const firstDosesComma = numberWithCommas(firstDoses)
+    const secondDosesComma = numberWithCommas(secondDoses)
+    const totalFirstDosesComma = numberWithCommas(totalFirstDoses)
+    const totalSecondDosesComma = numberWithCommas(totalSecondDoses)
+
     return(
         <Vaccinations firstDosesDate={firstDosesDate} 
-                      firstDoses={doses} 
+                      firstDoses={firstDosesComma} 
                       totalFirstDosesDate={totalFirstDosesDate}
-                      totalFirstDoses={dosesTotal}
+                      totalFirstDoses={totalFirstDosesComma}
+                      secondDosesDate={secondDosesDate}
+                      secondDoses={secondDosesComma}
+                      totalSecondDosesDate={totalSecondDosesDate}
+                      totalSecondDoses={totalSecondDosesComma}
+                      uptakeFirstDose={uptakeFirstDose}
+                      uptakeSecondDose={uptakeSecondDose}
                       />
     )
 }

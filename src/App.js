@@ -34,11 +34,42 @@ function App() {
     totalSecondDoses: ''
   })
 
+  const [uptakeFirstDose, setUptakeFirstDose] = useState({
+    date: '',
+    uptakeFirstDose: ''
+  })
+
+  const [uptakeSecondDose, setUptakeSecondDose] = useState({
+    date: '',
+    uptakeSecondDose: ''
+  })
+
+  const [deaths, setDeaths] = useState({
+    date: '',
+    deaths: ''
+  })
+
+  const [healthcare, setHealthcare] = useState({
+    date: '',
+    admitted: ''
+  })
+
+  const [testing, setTesting] = useState({
+    date: '',
+    tested: ''
+  })
+
   useEffect(() => {
     fetchCases()
     fetchFirstDosesDaily()
     fetchTotalFirstDoses()
     fetchSecondDosesDaily()
+    fetchTotalSecondDoses()
+    fetchUptakeFirstDose()
+    fetchUptakeSecondDose()
+    fetchDeaths()
+    fetchHealthcare()
+    fetchTests()
   }, [])
 
   const casesEndpoint = (
@@ -76,7 +107,47 @@ function App() {
     'filters=areaType=nation;areaName=england&' +
     `structure={
       "date":"date",
-      "firstDosesTotal":"cumPeopleVaccinatedFirstDoseByPublishDate"}`
+      "secondDosesTotal":"cumPeopleVaccinatedSecondDoseByPublishDate"}`
+  )
+
+  const vacEndpointUptakeFirstDose = (
+    'https://api.coronavirus.data.gov.uk/v1/data?' +
+    'filters=areaType=nation;areaName=england&' +
+    `structure={
+      "date":"date",
+      "uptakeFirstDose":"cumVaccinationFirstDoseUptakeByPublishDatePercentage"}`
+  )
+
+  const vacEndpointUptakeSecondDose = (
+    'https://api.coronavirus.data.gov.uk/v1/data?' +
+    'filters=areaType=nation;areaName=england&' +
+    `structure={
+      "date":"date",
+      "uptakeSecondDose":"cumVaccinationSecondDoseUptakeByPublishDatePercentage"}`
+  )
+
+  const deathsEndpointDaily = (
+    'https://api.coronavirus.data.gov.uk/v1/data?' +
+    'filters=areaType=nation;areaName=england&' +
+    `structure={
+      "date":"date",
+      "deaths":"newDeaths28DaysByPublishDate"}`
+  )
+
+  const healthcareEndpointDaily = (
+    'https://api.coronavirus.data.gov.uk/v1/data?' +
+    'filters=areaType=nation;areaName=england&' +
+    `structure={
+      "date":"date",
+      "admitted":"newAdmissions"}`
+  )
+
+  const testingEndpointDaily = (
+    'https://api.coronavirus.data.gov.uk/v1/data?' +
+    'filters=areaType=nation;areaName=england&' +
+    `structure={
+      "date":"date",
+      "tested":"newPCRTestsByPublishDate"}`
   )
 
   const fetchCases = async () => {
@@ -118,15 +189,83 @@ function App() {
     return data.then((resp) => {
       setSecondDoses({
         date: resp.data[0].date,
-        totalSecondDoses: resp.data[0].firstDosesTotal
+        secondDoses: resp.data[0].secondDoses
       })
     })
   }
 
+  const fetchTotalSecondDoses = async () => {
+    const response = await fetch(vacEndpointSecondDosesTotal)
+    const data = response.json()
+    return data.then((resp) => {
+      setTotalSecondDoses({
+        date: resp.data[0].date,
+        totalSecondDoses: resp.data[0].secondDosesTotal
+      })
+    })
+  }
+
+  const fetchUptakeFirstDose = async () => {
+    const response = await fetch(vacEndpointUptakeFirstDose)
+    const data = response.json()
+    return data.then((resp) => {
+      setUptakeFirstDose({
+        date: resp.data[0].date,
+        uptakeFirstDose: resp.data[0].uptakeFirstDose
+      })
+    })
+  }
+
+  const fetchUptakeSecondDose = async () => {
+    const response = await fetch(vacEndpointUptakeSecondDose)
+    const data = response.json()
+    return data.then((resp) => {
+      setUptakeSecondDose({
+        date: resp.data[0].date,
+        uptakeSecondDose: resp.data[0].uptakeSecondDose
+      })
+    })
+  }
+
+  const fetchDeaths = async () => {
+    const response = await fetch(deathsEndpointDaily)
+    const data = response.json()
+    return data.then((resp) => {
+      setDeaths({
+        date: resp.data[0].date,
+        deaths: resp.data[0].deaths
+      })
+    })
+  }
+
+  const fetchHealthcare = async () => {
+    const response = await fetch(healthcareEndpointDaily)
+    const data = response.json()
+    return data.then((resp) => {
+      setHealthcare({
+        date: resp.data[0].date,
+        admitted: resp.data[0].admitted
+      })
+    })
+  }
+
+  const fetchTests = async () => {
+    const response = await fetch(testingEndpointDaily)
+    const data = response.json()
+    return data.then((resp) => {
+      console.log(resp)
+      setTesting({
+        date: resp.data[0].date,
+        tested: resp.data[0].tested
+      })
+    })
+  }
+
+
   return (
     <div className="App">
       <header>
-        <h1>Covid-19 UK</h1>
+        <h1>Covid-19 England</h1>
       </header>
       <Container className="VaccinationsContainer">
         <VaccinationsContainer firstDosesDate={firstDoses.date} 
@@ -135,11 +274,16 @@ function App() {
                                totalFirstDoses={totalFirstDoses.totalFirstDoses}
                                secondDosesDate={secondDoses.date}
                                secondDoses={secondDoses.secondDoses}
+                               totalSecondDosesDate={totalSecondDoses.date}
+                               totalSecondDoses={totalSecondDoses.totalSecondDoses}
+                               uptakeFirstDoseDate={uptakeFirstDose.date}
+                               uptakeFirstDose={uptakeFirstDose.uptakeFirstDose}
+                               uptakeSecondDose={uptakeSecondDose.uptakeSecondDose}
                                />
         <Row>
           <CasesContainer dateCases={cases.date} dailyCases={cases.newCases}/>
-          <DeathsContainer />
-          <HealthcareContainer />
+          <DeathsContainer dateDeaths={deaths.date} deaths={deaths.deaths} />
+          <HealthcareContainer dateHealthcare={healthcare.date} admissions={healthcare.admitted} />
           <TestingContainer />
         </Row>
       </Container>

@@ -2,7 +2,14 @@ import { Row, Col } from 'react-bootstrap'
 import './Vaccinations.css'
 
 
-const Vaccinations = ({firstDosesDate, firstDoses, totalFirstDosesDate, totalFirstDoses}) => {
+const Vaccinations = ({firstDosesDate, 
+                       firstDoses, 
+                       totalFirstDoses, 
+                       secondDoses, 
+                       totalSecondDoses, 
+                       uptakeFirstDose, 
+                       uptakeSecondDose
+                    }) => {
     return(
         <Row className="VaccinationsRow">
             <Col sm={3}>
@@ -17,14 +24,14 @@ const Vaccinations = ({firstDosesDate, firstDoses, totalFirstDosesDate, totalFir
             </Col>
             <Col sm={3}>
                 <p>Daily - 2nd Dose</p>
-                <h3>69,270</h3> <br />
+                <h3>{secondDoses}</h3> <br />
                 <p>Total - 2nd Dose</p>
-                <h3>47,643,064</h3>
+                <h3>{totalSecondDoses}</h3>
             </Col>
             <Col sm={3}>
                 <p>% of population aged 16+</p>
-                <h3>87.7% - First Dose</h3>
-                <h3>76.7% - Second Dose</h3>
+                <h3>{uptakeFirstDose}% - First Dose</h3>
+                <h3>{uptakeSecondDose}% - Second Dose</h3>
             </Col>
         </Row>
     )
