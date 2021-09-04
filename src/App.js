@@ -147,7 +147,7 @@ function App() {
     'filters=areaType=nation;areaName=england&' +
     `structure={
       "date":"date",
-      "tested":"newPCRTestsByPublishDate"}`
+      "tested":"newTestsByPublishDate"}`
   )
 
   const fetchCases = async () => {
@@ -253,14 +253,12 @@ function App() {
     const response = await fetch(testingEndpointDaily)
     const data = response.json()
     return data.then((resp) => {
-      console.log(resp)
       setTesting({
         date: resp.data[0].date,
         tested: resp.data[0].tested
       })
     })
   }
-
 
   return (
     <div className="App">
@@ -284,7 +282,7 @@ function App() {
           <CasesContainer dateCases={cases.date} dailyCases={cases.newCases}/>
           <DeathsContainer dateDeaths={deaths.date} deaths={deaths.deaths} />
           <HealthcareContainer dateHealthcare={healthcare.date} admissions={healthcare.admitted} />
-          <TestingContainer />
+          <TestingContainer dateTested={testing.date} tested={testing.tested} />
         </Row>
       </Container>
     </div>

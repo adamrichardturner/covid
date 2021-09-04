@@ -1,15 +1,13 @@
 import { Col } from 'react-bootstrap'
 
-const Testing = () => {
+const Testing = ({dateTested, newTests}) => {
     return(
         <Col sm={3}>
-            <p>Cases</p>
-            <h2>People tested positive</h2>
-            <p>Latest data provided on 23 August 2021</p>
+            <p>New Tests Conducted</p>
+            <h2>New Tests by Publish Date</h2>
+            <p>Latest data provided on {dateTested}</p>
             <p>Daily</p>
-            <h2>31,914</h2>
-            <p>Last 7 days</p>
-            <h2>230,867</h2>
+            <h2>{newTests}</h2>
         </Col>
     ) 
 }
