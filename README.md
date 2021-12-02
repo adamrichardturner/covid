@@ -7,7 +7,7 @@ API to display up to date statistics held by the UK Govt. on the state of play w
 
 Download the app and run npm start. To see a demo of the app visit:
 
-https://adamrichardturner.dev/covid/
+https://adamrichardturner.github.io/covid/
 
 ## Features
 
